@@ -1,4 +1,4 @@
-# Travel Meet
+# Swipe Travel
 An travel app that allows you to determine places from swiping left or right. Just like dating!
 
 # Getting Started with Create React App
