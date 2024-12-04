@@ -31,7 +31,7 @@ const AuthPage: React.FC = () => {
         navigate("/home");
       }, 2000);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.code);
     }
   };
 

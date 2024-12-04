@@ -5,6 +5,7 @@ import LandingPage from "./Pages/LandingPage"
 import HomePage from "./Pages/HomePage";
 import AuthPage from "./Pages/AuthPage";
 import LikedDestinations from "./Components/Destinations";
+import LocationsPage from "./Pages/LocationsPage";
 import useTheme from "./hooks/useTheme";
 
 const App: React.FC = () => {
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/locations" element={<LocationsPage />} />
         <Route path="/liked" element={<LikedDestinations likedDestinations={[]} />} />
       </Routes>
     </>
