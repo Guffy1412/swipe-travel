@@ -3,7 +3,7 @@ import Card from "../Components/Card";
 import parisImg from "../Assets/paris.jpg";
 import tokyoImg from "../Assets/tokyo.jpg";
 import newYorkImg from "../Assets/new-york.jpg";
-import romeImg from "../Assets/rome.jpg";
+import LocationCard from "../Components/LocationCard";
 
 const locations = [
   {
@@ -45,13 +45,11 @@ const LocationsPage: React.FC = () => {
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {locations.map((location) => (
-          <Card
+          <LocationCard
             key={location.id}
             title={location.title}
             description={location.description}
             imageUrl={location.imageUrl}
-            onLike={() => handleLike(location.title)}
-            onPass={() => handlePass(location.title)}
           />
         ))}
       </div>
