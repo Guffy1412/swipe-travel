@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./Pages/LandingPage"
 import HomePage from "./Pages/HomePage";
 import AuthPage from "./Pages/AuthPage";
 import LikedDestinations from "./Components/Destinations";
@@ -19,7 +20,8 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AuthPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth" element={<AuthPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/liked" element={<LikedDestinations likedDestinations={[]} />} />
       </Routes>
