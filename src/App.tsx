@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import LandingPage from "./Pages/LandingPage"
+import SwipePage from "./Pages/SwipePage";
 import HomePage from "./Pages/HomePage";
 import AuthPage from "./Pages/AuthPage";
 import LikedDestinations from "./Components/Destinations";
 import LocationsPage from "./Pages/LocationsPage";
 import useTheme from "./hooks/useTheme";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -30,7 +32,22 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/swipe"
+          element={
+            <ProtectedRoute>
+              <SwipePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/locations" element={<LocationsPage />} />
         <Route path="/liked" element={<LikedDestinations likedDestinations={[]} />} />
       </Routes>

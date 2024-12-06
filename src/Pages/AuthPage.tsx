@@ -16,15 +16,19 @@ const AuthPage: React.FC = () => {
   const handleAuth = async () => {
     try {
       setError(""); // Clear previous errors
+      let userCredential;
       if (isLogin) {
         // Log in the user
-        await signInWithEmailAndPassword(auth, email, password);
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
         setToastMessage("Login successful!");
       } else {
         // Sign up the user
-        await createUserWithEmailAndPassword(auth, email, password);
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
         setToastMessage("Signup successful!");
       }
+      const token = await userCredential.user.getIdToken();
+      //console.log("ID Token:", token);
+      localStorage.setItem("authToken", token);
       setToastVisible(true);
       setTimeout(() => {
         setToastVisible(false);

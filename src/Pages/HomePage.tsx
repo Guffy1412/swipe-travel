@@ -1,93 +1,102 @@
-import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase-config"; // Firebase configuration
-import Card from "../Components/Card";
-import Toast from "../Components/Toast";
-
-interface Destination {
-  id: string; // Firestore document ID
-  title: string;
-  description: string;
-  imageUrl: string;
-}
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage: React.FC = () => {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [likedDestinations, setLikedDestinations] = useState<string[]>([]);
-  const [toastVisible, setToastVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchDestinations = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "locations"));
-        const locationsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Destination[];
-        setDestinations(locationsData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
-    fetchDestinations();
-  }, []);
-
-  const handleLike = () => {
-    setLikedDestinations([...likedDestinations, destinations[currentIndex].title]);
-    handleNext();
-  };
-
-  const handlePass = () => {
-    handleNext();
-  };
-
-  const handleNext = () => {
-    if (currentIndex < destinations.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setToastVisible(true); // Show toast when all destinations are viewed
-    }
-  };
-
-  const closeToast = () => {
-    setToastVisible(false);
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-800">
-        <p className="text-xl text-gray-800 dark:text-gray-200">Loading destinations...</p>
-      </div>
-    );
-  }
+  const navigate = useNavigate();
+  const userName = "John Doe"; // Replace with dynamic user data
+  const upcomingTrips = [
+    { destination: "Paris", date: "2024-12-25", daysLeft: 26 },
+    { destination: "Tokyo", date: "2025-01-15", daysLeft: 47 },
+  ];
+  const recommendedDestinations = [
+    { title: "Bali", description: "Best for winter escapes", imageUrl: "/images/bali.jpg" },
+    { title: "New York", description: "Vibrant city life", imageUrl: "/images/ny.jpg" },
+    { title: "Rome", description: "Historical wonders", imageUrl: "/images/rome.jpg" },
+  ];
+  const specialOffers = [
+    { title: "20% off on Bali trips", validUntil: "2024-12-15" },
+    { title: "Free upgrade for New York flights", validUntil: "2024-12-20" },
+  ];
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-800">
-      {currentIndex < destinations.length ? (
-        <Card
-          {...destinations[currentIndex]}
-          onLike={handleLike}
-          onPass={handlePass}
-        />
-      ) : (
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            You've seen all destinations!
-          </h1>
-          <p className="text-gray-700 dark:text-gray-400 mt-4">
-            Visit your liked destinations on another page.
-          </p>
+    <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 min-h-screen">
+      {/* Personalized Welcome Banner */}
+      <section className="bg-blue-500 text-white p-6 text-center">
+        <h1 className="text-3xl font-bold">Welcome back, {userName}!</h1>
+        <p className="mt-2">Complete your profile for personalized recommendations.</p>
+      </section>
+
+      {/* Recommended Destinations */}
+      <section className="p-6">
+        <h2 className="text-2xl font-bold">Recommended Destinations</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+          {recommendedDestinations.map((dest, index) => (
+            <div key={index} className="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden">
+              <img src={dest.imageUrl} alt={dest.title} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-bold">{dest.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{dest.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
-      )}
-      <Toast
-        message="No more destinations to view!"
-        isVisible={toastVisible}
-        onClose={closeToast}
-      />
+      </section>
+
+      {/* Upcoming Trips */}
+      <section className="p-6 bg-gray-200 dark:bg-gray-700">
+        <h2 className="text-2xl font-bold">Your Upcoming Trips</h2>
+        <div className="mt-4 space-y-4">
+          {upcomingTrips.map((trip, index) => (
+            <div key={index} className="flex justify-between items-center bg-white dark:bg-gray-900 p-4 rounded-md shadow-md">
+              <div>
+                <h3 className="text-xl font-bold">{trip.destination}</h3>
+                <p className="text-gray-600 dark:text-gray-400">Departure: {trip.date}</p>
+              </div>
+              <div className="text-lg font-semibold text-blue-500">{trip.daysLeft} days left</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Special Offers */}
+      <section className="p-6">
+        <h2 className="text-2xl font-bold">Special Offers</h2>
+        <div className="mt-4 space-y-4">
+          {specialOffers.map((offer, index) => (
+            <div key={index} className="bg-white dark:bg-gray-900 p-4 rounded-md shadow-md">
+              <h3 className="text-lg font-bold">{offer.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400">Valid until: {offer.validUntil}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Travel Inspiration */}
+      <section className="p-6 bg-gray-200 dark:bg-gray-700">
+        <h2 className="text-2xl font-bold">Travel Inspiration</h2>
+        <p className="mt-2">Discover blogs, articles, and travel guides to spark your wanderlust.</p>
+        <div className="mt-4 flex gap-4">
+          <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow-md flex-1">
+            <h3 className="text-lg font-bold">Top Beaches of 2024</h3>
+            <p className="text-gray-600 dark:text-gray-400">Find the best beaches to relax and unwind.</p>
+          </div>
+          <div className="bg-white dark:bg-gray-900 p-4 rounded-md shadow-md flex-1">
+            <h3 className="text-lg font-bold">Hidden Gems in Europe</h3>
+            <p className="text-gray-600 dark:text-gray-400">Explore lesser-known but breathtaking destinations.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Access Buttons */}
+      <section className="p-6">
+        <h2 className="text-2xl font-bold">Quick Access</h2>
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button className="p-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">Book a Flight</button>
+          <button className="p-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">Find Hotels</button>
+          <button className="p-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">Plan a Trip</button>
+          <button className="p-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">Travel Support</button>
+        </div>
+      </section>
     </div>
   );
 };

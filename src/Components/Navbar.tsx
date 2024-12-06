@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     </button>
         </div>
         <div className="navigation flex items-center space-x-6">
-          <Link to="/" className="tab text-black dark:text-white hover:text-blue-500">
+          <Link to="/home " className="tab text-black dark:text-white hover:text-blue-500">
             Home
           </Link>
           <Link to="/locations" className="tab text-black dark:text-white hover:text-blue-500">
