@@ -33,7 +33,11 @@ const LocationsPage: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-xl text-gray-700">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+        <div className="loader"></div>
+      </div>
+    );
   }
 
   return (
