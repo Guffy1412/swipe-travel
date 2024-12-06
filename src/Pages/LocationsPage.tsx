@@ -1,42 +1,40 @@
-import React, { useState } from "react";
-import Card from "../Components/Card";
-import parisImg from "../Assets/paris.jpg";
-import tokyoImg from "../Assets/tokyo.jpg";
-import newYorkImg from "../Assets/new-york.jpg";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase-config";
 import LocationCard from "../Components/LocationCard";
 
-const locations = [
-  {
-    id: 1,
-    title: "Paris",
-    description: "The city of lights, known for its iconic Eiffel Tower.",
-    imageUrl: parisImg,
-  },
-  {
-    id: 2,
-    title: "Tokyo",
-    description: "A bustling city blending modern and traditional cultures.",
-    imageUrl: tokyoImg,
-  },
-  {
-    id: 3,
-    title: "New York",
-    description: "The city that never sleeps, famous for Times Square.",
-    imageUrl: newYorkImg,
-  },
-];
+interface Location {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+}
 
 const LocationsPage: React.FC = () => {
-  const [likedLocations, setLikedLocations] = useState<string[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleLike = (title: string) => {
-    setLikedLocations([...likedLocations, title]);
-    alert(`${title} added to your favorites!`);
-  };
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "locations"));
+        const locationsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Location[];
+        setLocations(locationsData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
 
-  const handlePass = (title: string) => {
-    alert(`You passed on ${title}.`);
-  };
+    fetchLocations();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-xl text-gray-700">Loading...</div>;
+  }
 
   return (
     <div className="p-8 bg-gray-100 dark:bg-gray-800 min-h-screen">

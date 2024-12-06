@@ -7,6 +7,7 @@ interface DestinationProps {
 }
 
 const LocationCard: React.FC<DestinationProps> = ({ title, description, imageUrl}) => {
+  console.log(imageUrl)
   return (
     <div className="w-80 h-96 bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between">
       <img src={imageUrl} alt={title} className="w-full h-48 object-cover rounded-md" />
