@@ -4,6 +4,18 @@ import { useNavigate } from "react-router-dom";
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
+  // Check if the user is logged in by verifying the token
+  const isLoggedIn = !!localStorage.getItem("authToken");
+
+  const handleGetStarted = () => {
+    if (isLoggedIn) {
+      console.log(isLoggedIn)
+      navigate("/home"); // Redirect to home page if logged in
+    } else {
+      navigate("/auth"); // Redirect to auth page if not logged in
+    }
+  };
+
   return (
     <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100">
       {/* Hero Section */}
@@ -13,7 +25,7 @@ const LandingPage: React.FC = () => {
           Discover and save your dream travel destinations with a swipe!
         </p>
         <button
-          onClick={() => navigate("/auth")}
+          onClick={() => handleGetStarted()}
           className="px-6 py-3 bg-white text-blue-600 rounded-md text-lg font-semibold hover:bg-gray-200"
         >
           Get Started

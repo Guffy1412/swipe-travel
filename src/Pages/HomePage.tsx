@@ -3,6 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("authToken"); // Check if user is logged in
+
+  const handleGetStarted = () => {
+    if (isLoggedIn) {
+      navigate("/home"); // Redirect to HomePage if logged in
+    } else {
+      navigate("/"); // Redirect to AuthPage if not logged in
+    }
+  };
   const userName = "John Doe"; // Replace with dynamic user data
   const upcomingTrips = [
     { destination: "Paris", date: "2024-12-25", daysLeft: 26 },
