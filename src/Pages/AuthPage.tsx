@@ -32,7 +32,7 @@ const AuthPage: React.FC = () => {
       setToastVisible(true);
       setTimeout(() => {
         setToastVisible(false);
-        navigate("/home");
+        navigate("/user-details");
       }, 2000);
     } catch (err: any) {
       setError(err.code);

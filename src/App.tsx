@@ -9,6 +9,7 @@ import LikedDestinations from "./Components/Destinations";
 import LocationsPage from "./Pages/LocationsPage";
 import useTheme from "./hooks/useTheme";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import UserDetailsPage from "./Pages/UserDetailsPage";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -49,6 +50,7 @@ const App: React.FC = () => {
           }
         />
         <Route path="/locations" element={<LocationsPage />} />
+        <Route path="/user-details" element={<UserDetailsPage />} />
         <Route path="/liked" element={<LikedDestinations likedDestinations={[]} />} />
       </Routes>
     </>
