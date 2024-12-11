@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import Toast from "../Components/Toast";
+import { doc, getDoc } from "firebase/firestore";
 
 const AuthPage: React.FC = () => {
   const navigate = useNavigate();
@@ -26,13 +27,22 @@ const AuthPage: React.FC = () => {
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
         setToastMessage("Signup successful!");
       }
+      const userId = userCredential.user.uid;
       const token = await userCredential.user.getIdToken();
       //console.log("ID Token:", token);
       localStorage.setItem("authToken", token);
       setToastVisible(true);
-      setTimeout(() => {
+      setTimeout(async () => {
         setToastVisible(false);
-        navigate("/user-details");
+        const userRef = doc(db, "users", userId); // Reference to the Firestore document
+        const userSnap = await getDoc(userRef); // Check if the document exists
+
+        if (!userSnap.exists()) {
+          // If the document doesn't exist, create it
+          navigate("/user-details");
+        } else {
+          navigate("/home")
+        }
       }, 2000);
     } catch (err: any) {
       setError(err.code);

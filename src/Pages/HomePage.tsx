@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase-config";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState<string | null>("Loading...");
   const isLoggedIn = !!localStorage.getItem("authToken"); // Check if user is logged in
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            setUserName(userData.name || "User");
+          } else {
+            setUserName("User");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          setUserName("User");
+        }
+      } else {
+        setUserName("Guest");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleGetStarted = () => {
     if (isLoggedIn) {
@@ -12,7 +39,7 @@ const HomePage: React.FC = () => {
       navigate("/"); // Redirect to AuthPage if not logged in
     }
   };
-  const userName = "John Doe"; // Replace with dynamic user data
+
   const upcomingTrips = [
     { destination: "Paris", date: "2024-12-25", daysLeft: 26 },
     { destination: "Tokyo", date: "2025-01-15", daysLeft: 47 },

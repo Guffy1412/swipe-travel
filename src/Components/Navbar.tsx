@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 import searchIcon from "../Assets/search.svg";
 
 const Navbar: React.FC = () => {
   // Simulating the authentication state
+  const auth = getAuth(); 
   const isLoggedIn = localStorage.getItem("authToken") !== null;
 
-  const handleSignOut = () => {
-    localStorage.removeItem("authToken"); // Remove the auth token from localStorage
-    window.location.reload(); // Reload the page to reflect the updated navbar
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth); // Sign out the user from Firebase
+      localStorage.removeItem("authToken"); // Remove the auth token from localStorage
+      window.location.reload(); // Reload the page to reflect the updated navbar
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
