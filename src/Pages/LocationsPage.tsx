@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config";
 import LocationCard from "../Components/LocationCard";
-
-interface Location {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-}
+import { Location } from "../Assets/LocationInterface";
 
 const LocationsPage: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -45,13 +39,14 @@ const LocationsPage: React.FC = () => {
       <h1 className="text-3xl font-bold text-center text-black dark:text-white mb-8">
         Explore Locations
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
         {locations.map((location) => (
           <LocationCard
             key={location.id}
             title={location.title}
             description={location.description}
             imageUrl={location.imageUrl}
+            country={location.country}
           />
         ))}
       </div>
