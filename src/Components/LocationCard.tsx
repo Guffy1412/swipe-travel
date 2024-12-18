@@ -1,15 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Location } from "../Assets/LocationInterface";
 
-interface DestinationProps {
-  title: string;
-  description: string;
-  imageUrl: string;
-  country: string; 
-}
 const backendUrl = "http://localhost:5000";
 
-const LocationCard: React.FC<DestinationProps> = ({ title, description, imageUrl, country }) => {
-  console.log(`${backendUrl}/images/${imageUrl}`);
+const LocationCard: React.FC<Location> = ({ title, description, imageUrl, country }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/activities/${title.replace(/\s+/g, '-').toLowerCase()}`);
+  };
+
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
       return `${text.slice(0, maxLength)}...`;
@@ -18,7 +19,10 @@ const LocationCard: React.FC<DestinationProps> = ({ title, description, imageUrl
   };
 
   return (
-    <div className="w-80 h-96 bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between">
+    <div
+      className="w-80 h-96 bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between cursor-pointer hover:shadow-xl transition-shadow duration-300"
+      onClick={handleCardClick}
+    >
       <img
         src={`${backendUrl}/images/${imageUrl}`}
         alt={title}
@@ -34,4 +38,6 @@ const LocationCard: React.FC<DestinationProps> = ({ title, description, imageUrl
     </div>
   );
 };
+
 export default LocationCard;
+export type { Location };

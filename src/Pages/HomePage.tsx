@@ -38,7 +38,6 @@ const HomePage: React.FC = () => {
       try {
         const querySnapshot = await getDocs(collection(db, "locations"));
         const locationsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
           ...doc.data(),
         })) as Location[];
         setLocations(locationsData);
@@ -92,7 +91,6 @@ const HomePage: React.FC = () => {
           {filteredLocations.length > 0 ? (
             filteredLocations.map((location) => (
               <LocationCard
-                key={location.id}
                 title={location.title}
                 description={location.description}
                 imageUrl={location.imageUrl}
