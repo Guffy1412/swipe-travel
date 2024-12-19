@@ -13,6 +13,7 @@ const LocationsPage: React.FC = () => {
       try {
         const querySnapshot = await getDocs(collection(db, "locations"));
         const locationsData = querySnapshot.docs.map((doc) => ({
+          key: doc.id,
           ...doc.data(),
         })) as Location[];
         setLocations(locationsData);
@@ -41,6 +42,7 @@ const LocationsPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
         {locations.map((location) => (
           <LocationCard
+            key={location.key}
             title={location.title}
             description={location.description}
             imageUrl={location.imageUrl}

@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Location } from "../Assets/LocationInterface";
+import { Country } from "../Assets/CountryInterface";
 
 const backendUrl = "http://localhost:5000";
 
-const LocationCard: React.FC<Location> = ({ title, description, imageUrl, country }) => {
+const CountryCard: React.FC<Country> = ({ title, description, imageUrl }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -24,13 +24,12 @@ const LocationCard: React.FC<Location> = ({ title, description, imageUrl, countr
       onClick={handleCardClick}
     >
       <img
-        src={`${backendUrl}/images/cities/${imageUrl}`}
+        src={`${backendUrl}/images/countries/${imageUrl}`}
         alt={title}
         className="w-full h-48 object-cover rounded-md"
       />
       <div>
         <h2 className="text-xl font-bold mt-4">{title}</h2>
-        <p className="text-gray-600 dark:text-gray-400 text-sm">{country}</p>
       </div>
       <p className="text-gray-600 dark:text-gray-400 mt-2">
         {truncateText(description, 140)}
@@ -39,5 +38,5 @@ const LocationCard: React.FC<Location> = ({ title, description, imageUrl, countr
   );
 };
 
-export default LocationCard;
-export type { Location };
+export default CountryCard;
+export type { Country };

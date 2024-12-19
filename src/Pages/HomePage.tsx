@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase-config";
-import LocationCard from "../Components/LocationCard";
-import { Location } from "../Assets/LocationInterface";
+import { Country } from "../Assets/CountryInterface";
+import CountryCard from "../Components/CountryCard";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState<string | null>("Loading...");
-  const [locations, setLocations] = useState<Location[]>([]); // State for fetched locations
+  const [countries, setCountries] = useState<Country[]>([]); // State for fetched locations
   const [searchQuery, setSearchQuery] = useState<string>(""); // State for search input
   const [loading, setLoading] = useState(true);
 
@@ -36,11 +36,13 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "locations"));
-        const locationsData = querySnapshot.docs.map((doc) => ({
+        const querySnapshot = await getDocs(collection(db, "countries"));
+        const countriesData = querySnapshot.docs.map((doc) => ({
+          key: doc.id,
           ...doc.data(),
-        })) as Location[];
-        setLocations(locationsData);
+        })) as Country[];
+        console.log(countriesData)
+        setCountries(countriesData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching locations:", error);
@@ -51,10 +53,9 @@ const HomePage: React.FC = () => {
   }, []);
 
   // Filter locations based on the search query
-  const filteredLocations = locations.filter(
-    (location) =>
-      location.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      location.country.toLowerCase().includes(searchQuery.toLowerCase()) // Include country in search
+  const filteredCountries = countries.filter(
+    (country) =>
+      country.title.toLowerCase().includes(searchQuery.toLowerCase()) // Include country in search
   );
 
   if (loading) {
@@ -88,13 +89,13 @@ const HomePage: React.FC = () => {
 
         {/* Locations Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {filteredLocations.length > 0 ? (
-            filteredLocations.map((location) => (
-              <LocationCard
-                title={location.title}
-                description={location.description}
-                imageUrl={location.imageUrl}
-                country={location.country}
+          {filteredCountries.length > 0 ? (
+            filteredCountries.map((country) => (
+              <CountryCard
+                key={country.key}
+                title={country.title}
+                description={country.description}
+                imageUrl={country.imageUrl}
               />
             ))
           ) : (
