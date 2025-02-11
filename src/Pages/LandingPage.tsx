@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import landingPageImage from '../Assets/landingPageImage.jpg';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +20,10 @@ const LandingPage: React.FC = () => {
   return (
     <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100">
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+      <section 
+        className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 bg-cover bg-center bg-blend-overlay text-white"
+        style={{ backgroundImage: `url(${landingPageImage})` }}
+      >
         <h1 className="text-5xl font-bold text-center mb-4">Welcome to TravelSwipe</h1>
         <p className="text-lg text-center mb-8">
           Discover and save your dream travel destinations with a swipe!

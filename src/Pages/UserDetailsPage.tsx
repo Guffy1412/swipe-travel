@@ -13,19 +13,18 @@ const UserDetailsPage: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      setError(""); // Clear any previous errors
+      setError(""); 
 
-      const user = auth.currentUser; // Get the logged-in user
+      const user = auth.currentUser;
       if (!user) {
         setError("You must be logged in to update your profile.");
         return;
       }
 
-      const userRef = doc(db, "users", user.uid); // Reference to the Firestore document
-      const userSnap = await getDoc(userRef); // Check if the document exists
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef); 
 
       if (!userSnap.exists()) {
-        // If the document doesn't exist, create it
         await setDoc(userRef, {
           name,
           phone,
@@ -33,7 +32,6 @@ const UserDetailsPage: React.FC = () => {
           isProfileComplete: true,
         });
       } else {
-        // If the document exists, update the fields
         await setDoc(
           userRef,
           {
@@ -42,11 +40,11 @@ const UserDetailsPage: React.FC = () => {
             address,
             isProfileComplete: true,
           },
-          { merge: true } // Merge with existing fields
+          { merge: true } 
         );
       }
 
-      navigate("/home"); // Redirect to the home page
+      navigate("/home");
     } catch (error: any) {
       console.error("Error updating profile:", error);
       setError("An error occurred while updating your profile. Please try again.");
