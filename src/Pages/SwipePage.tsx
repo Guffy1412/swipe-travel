@@ -3,41 +3,35 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config"; // Firebase configuration
 import Card from "../Components/Card";
 import Toast from "../Components/Toast";
-
-interface Destination {
-  id: string; 
-  title: string;
-  description: string;
-  imageUrl: string;
-}
+import { Location } from "../Assets/LocationInterface";
 
 const SwipePage: React.FC = () => {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedDestinations, setLikedDestinations] = useState<string[]>([]);
   const [toastVisible, setToastVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const fetchLocations = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "locations"));
         const locationsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
+          key: doc.id,
           ...doc.data(),
-        })) as Destination[];
-        setDestinations(locationsData);
+        })) as Location[];
+        setLocations(locationsData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching locations:", error);
       }
     };
 
-    fetchDestinations();
+    fetchLocations();
   }, []);
 
   const handleLike = () => {
-    setLikedDestinations([...likedDestinations, destinations[currentIndex].title]);
+    setLikedDestinations([...likedDestinations, locations[currentIndex].title]);
     handleNext();
   };
 
@@ -46,7 +40,7 @@ const SwipePage: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (currentIndex < destinations.length - 1) {
+    if (currentIndex < locations.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       setToastVisible(true); // Show toast when all destinations are viewed
@@ -67,9 +61,11 @@ const SwipePage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-800">
-      {currentIndex < destinations.length ? (
+      {currentIndex < locations.length ? (
         <Card
-          {...destinations[currentIndex]}
+          title={locations[currentIndex].title}
+          description={locations[currentIndex].description}
+          imageUrl={locations[currentIndex].imageUrl}
           onLike={handleLike}
           onPass={handlePass}
         />

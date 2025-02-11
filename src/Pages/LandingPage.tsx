@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import landingPageImage from '../Assets/landingPageImage.jpg';
+import screenshotImage from '../Assets/screenshotImage.jpg';
+import screenshotImage2 from '../Assets/screenshotImage2.jpg';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -67,16 +69,33 @@ const LandingPage: React.FC = () => {
       <section className="py-16 px-6 bg-gray-200 dark:bg-gray-700">
         <h2 className="text-4xl font-bold text-center mb-8">How It Works</h2>
         <div className="flex flex-wrap justify-center items-center gap-8">
-          <img
-            src="/mockup1.png"
-            alt="App Screenshot 1"
-            className="w-80 h-auto rounded-lg shadow-lg"
-          />
-          <img
-            src="/mockup2.png"
-            alt="App Screenshot 2"
-            className="w-80 h-auto rounded-lg shadow-lg"
-          />
+          
+          {/* Step 1 */}
+          <div className="max-w-xs text-center">
+            <img
+              src={screenshotImage}
+              alt="Browse Destinations"
+              className="w-80 h-80 object-cover object-center rounded-lg shadow-lg"
+            />
+            <h3 className="text-2xl font-semibold mt-4">Swipe Through Destinations</h3>
+            <p className="text-gray-700 dark:text-gray-300 mt-2">
+              Explore amazing travel spots by swiping left to skip or right to save your favorite destinations.
+            </p>
+          </div>
+          
+          {/* Step 2 */}
+          <div className="max-w-xs text-center">
+            <img
+              src={screenshotImage2}
+              alt="Save Favorites"
+              className="w-80 h-80 object-cover object-center rounded-lg shadow-lg"
+            />
+            <h3 className="text-2xl font-semibold mt-4">Save & Plan Your Trip</h3>
+            <p className="text-gray-700 dark:text-gray-300 mt-2">
+              View all your saved destinations in one place and start planning your perfect getaway with personalized recommendations.
+            </p>
+          </div>
+
         </div>
       </section>
 

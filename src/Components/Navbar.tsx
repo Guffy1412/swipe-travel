@@ -51,6 +51,9 @@ const Navbar: React.FC = () => {
           <Link to="/home" className="tab text-black dark:text-white hover:text-blue-500">
             Home
           </Link>
+          <Link to="/swipe" className="tab text-black dark:text-white hover:text-blue-500">
+            Swipe
+          </Link>
           <Link to="/locations" className="tab text-black dark:text-white hover:text-blue-500">
             Locations
           </Link>
