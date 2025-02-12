@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc, doc, setDoc, getDoc } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
 import { auth, db } from "../firebase-config";
 import "../styles/UserDetailsPage.css";
 
@@ -43,6 +44,7 @@ const UserDetailsPage: React.FC = () => {
           { merge: true } 
         );
       }
+      updateProfile(user, { displayName: name });
 
       navigate("/home");
     } catch (error: any) {

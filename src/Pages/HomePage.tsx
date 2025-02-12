@@ -19,9 +19,8 @@ const HomePage: React.FC = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         try {
-          setUserName(user.displayName || "User");
+          setUserName(user.displayName);
         } catch (error) {
-          console.error("Error fetching user data:", error);
           setUserName("User");
         }
       } else {
